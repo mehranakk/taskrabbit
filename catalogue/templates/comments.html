@@ -7,7 +7,22 @@
     </ul>
     <div class="row">
         <div class="col-md-4 col-md-offset-4">
-            {{ error }}
+            <div>
+                Comments about you:
+            </div>
+            <ui>
+                {% for comment in comments_about_you %}
+                    {{ comment.employer }} said: {{ comment.text }}
+                {% endfor %}
+            </ui>
+            <div>
+                Your comments:
+            </div>
+            <ui>
+                {% for comment in your_comments %}
+                    about {{ comment.employee }}: {{ comment.text }}
+                {% endfor %}
+            </ui>
         </div>
    </div>
 {% endblock %}

@@ -79,4 +79,9 @@ def history(request):
 
 @login_required
 def comments(request):
-    return render_to_response('comments.html', {})
+    user = MyUser.objects.get(user=request.user)
+    context = {
+        'your_comments': Comment.objects.filter(employer=user),
+        'comments_about_you': Comment.objects.filter(employee=user),
+    }
+    return render_to_response('comments.html', context)
