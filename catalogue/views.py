@@ -3,10 +3,18 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 
 
-# Create your tests here.
-
-def kasesher(request):
-    return render_to_response('base.html', context={})
+@login_required
+def profile(request, user_id):
+    u = get_object_or_404(User, pk=user_id)
+    is_profile_owner = False
+    is_following = False
+    if u.id == request.user.id:
+        is_profile_owner = True
+    else:
+        if request.user.myuser.following.filter(id=u.id).count():
+            is_following = True
+    return render_to_response("profile.html", {'request': request, 'user': u, 'is_profile_owner': is_profile_owner,
+                                               'is_following': is_following, })
 
 @login_required
 def edit_profile(request):

@@ -1,0 +1,43 @@
+{%  extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div id="profile-image" class="col-md-4">
+            {% if user.myuser.picture %}
+                <img src="/{{ user.myuser.picture.url }}" class="img-responsive"/>
+            {% else %}
+                <img src="/media/profile_pictures/default.png" class="img-responsive"/>
+            {% endif %}
+        </div>
+        {% if not is_profile_owner %}
+            {% if is_following %}
+                <a href="/unfollow/{{ user.id }}">UnFollow</a>
+            {% else %}
+                <a href="/follow/{{ user.id }}">Follow</a>
+            {% endif %}
+        {% endif %}
+    </div>
+    <br>
+    <div class="row">
+        <div id="details" class="col-md-5">
+            <table class="table">
+                <tr><td>Name: {{ user.myuser.display_name }}</td></tr>
+            </table>
+        </div>
+    </div>
+    <br>
+    {% if is_profile_owner %}
+        <a href="/accounts/edit/">Edit</a>
+        <hr>
+        <br>
+        Following:
+        <div class="row">
+            <div id="following" class="col-md-5">
+                <table class="table">
+                    {% for u in user.myuser.following.all %}
+                        <tr><td>Name: <a href='/accounts/profile/{{ u.id }}'>{{ u.myuser.display_name }}</a></td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

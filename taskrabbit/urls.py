@@ -20,7 +20,7 @@ urlpatterns = [
     url(r'^$', 'catalogue.views.kasesher', name='kaseshare'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    #url(r'^accounts/profile/(?P<user_id>[0-9]+)$', 'social.views.profile'),
+    url(r'^accounts/profile/(?P<user_id>[0-9]+)$', 'catalogue.views.profile'),
     url(r'^accounts/edit/$', 'catalogue.views.edit_profile'),
     url(r'^accounts/signup/$', 'catalogue.views.signup'),
 
