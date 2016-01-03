@@ -7,5 +7,6 @@ admin.site.register(MyUser)
 admin.site.register(Comment)
 admin.site.register(TaskRequest)
 admin.site.register(Category)
+admin.site.register(Skill)
 
 

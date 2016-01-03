@@ -7,10 +7,22 @@
     </ul>
     <div class="row">
         <div id="info" class="col-md-10">
-            User Name: {{ user.display_name }}
+            <div>
+                User Name: {{ user.display_name }}
+            </div>
+            <div>
+                Skills
+            </div>
+            <ul>
+                {% for skill in skills %}
+                    <li>
+                        {{ skill.title }}
+                    </li>
+                {% endfor %}
+            </ul>
         </div>
-        <div id="edit_info" class="col-md-2">
-            <a class="btn btn-default" href="/edit_info/" role="button">
+        <div id="edit" class="col-md-2">
+            <a class="btn btn-default" href="/accounts/edit/" role="button">
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </a>
         </div>

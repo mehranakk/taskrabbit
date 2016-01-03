@@ -35,21 +35,21 @@ def take_task(request, task_id):
 
 @login_required
 def profile(request):
+    user = MyUser.objects.get(user=request.user)
     context = {
-        'user': MyUser.objects.get(user=request.user),
+        'user': user,
+        'skills': user.skills.all(),
     }
     return render_to_response("profile.html", context)
 
 @login_required
-def edit_profile(request):
-    if request.method == "POST":
-        form = EditProfileForm(request.POST, request.FILES, instance=request.user.myuser)
-    else:
-        form = EditProfileForm(instance=request.user.myuser)
-    if form.is_valid():
-        form.save()
-        return HttpResponseRedirect('/accounts/profile/%d' % request.user.id)
-    return render_to_response('edit_profile.html', {'request': request, 'form':form})
+def edit(request):
+    user = MyUser.objects.get(user=request.user)
+    context = {
+        'user': user,
+        'skills': user.skills.all(),
+    }
+    return render_to_response('edit.html', context)
 
 @login_required
 def signup(request):

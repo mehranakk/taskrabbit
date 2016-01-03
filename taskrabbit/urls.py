@@ -27,6 +27,6 @@ urlpatterns = [
     url(r'^accounts/profile/$', 'catalogue.views.profile'),
     url(r'^accounts/history/$', 'catalogue.views.history'),
     url(r'^accounts/comments/$', 'catalogue.views.comments'),
-    url(r'^accounts/edit/$', 'catalogue.views.edit_profile'),
+    url(r'^accounts/edit/$', 'catalogue.views.edit'),
     url(r'^accounts/signup/$', 'catalogue.views.signup'),
 ]
