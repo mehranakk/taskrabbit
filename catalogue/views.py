@@ -2,10 +2,13 @@ from django.http.response import HttpResponseNotFound, HttpResponseRedirect, Htt
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from catalogue.models import MyUser
 from django.http import HttpRequest, HttpResponseRedirect
+from django.contrib.auth.models import User
+from django.template import RequestContext, Context
+
 
 from catalogue.models import *
+from catalogue.forms import *
 
 
 def home(request, category='all'):
@@ -54,5 +57,23 @@ def edit_profile(request):
 
 @login_required
 def signup(request):
-    #Not Supported yet
-    return HttpResponseRedirect('/accounts/login/$')
+    if request.method == "POST":
+        form = NewProfileForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            email = form.cleaned_data['email']
+            display_name = form.cleaned_data['display_name']
+            user = User.objects.create_user(username, email, password)
+            user.save()
+            myUser = MyUser.objects.create(user=user, display_name=display_name)
+            myUser.save()
+            return HttpResponseRedirect('/all/')
+
+    form = NewProfileForm()
+    return render_to_response('registration/signup.html', {'form': form}, context_instance=RequestContext(request))
+
+
+
+
+

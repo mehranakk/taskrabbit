@@ -15,14 +15,15 @@ Including another URLconf
 from django.conf.urls import include, url
 from django.contrib import admin, auth
 from django.contrib.auth import views as auth_views
+from django.views.generic import RedirectView
 
 urlpatterns = [
-    url(r'^(?P<category>[A-Za-z0-9_]+)/$', 'catalogue.views.home', name='home'),
+    url(r'^category/(?P<category>[A-Za-z0-9_]+)/$', 'catalogue.views.home', name='home'),
+    url(r'^$', 'catalogue.views.home', name='default_home'),
     url(r'^take_task/(?P<task_id>[0-9]+)/$', 'catalogue.views.take_task', name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
-    url(r'^accounts/profile/(?P<user_id>[0-9]+)$', 'catalogue.views.profile'),
+    url(r'^accounts/profile/(?P<user_id>[0-9]+)/$', 'catalogue.views.profile'),
     url(r'^accounts/edit/$', 'catalogue.views.edit_profile'),
     url(r'^accounts/signup/$', 'catalogue.views.signup'),
-
 ]
