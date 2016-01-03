@@ -4,9 +4,8 @@ from django.db import models
 
 class Skill(models.Model):
     title = models.CharField(max_length=50)
-    commend = models.PositiveIntegerField(verbose_name="recommendations")
     def __unicode__(self):
-        return self.text
+        return self.title
 
 
 class MyUser(models.Model):
