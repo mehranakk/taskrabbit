@@ -1,0 +1,21 @@
+{%  extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div id="posts" class="col-md-9">
+            <table class="table">
+                {%  for item in posts %}
+                    <tr><td>
+                        {%  with item.post as post %}
+                        {%  with item.movie as movie %}
+                        {%  with item.comments as comments %}
+                            {% include "post.html" %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                        <a href="/post/{{ item.post.id }}">View Post</a>
+                    </tr></td>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
