@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.http.response import HttpResponseNotFound, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
@@ -80,3 +82,22 @@ def history(request):
 @login_required
 def comments(request):
     return render_to_response('comments.html', {})
+
+
+@login_required
+def new_task(request):
+    employer = MyUser.objects.get(user=request.user)
+    if request.method == "POST":
+        form = NewTaskForm(request.POST)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            text = form.cleaned_data['text']
+            category = form.cleaned_data['category']
+            task = Task.objects.create(employer=employer, title=title, text=text, upload_date=datetime.now(),
+                    category=category, status='N')
+            task.save()
+
+        return HttpResponseRedirect('/')
+    form = NewTaskForm()
+    return render_to_response('new_task.html', {'form': form}, context_instance=RequestContext(request))
+
