@@ -1,5 +1,5 @@
 from django import forms
-from .models import MyUser
+from .models import MyUser, Task
 
 class EditProfileForm(forms.ModelForm):
     class Meta:
@@ -11,3 +11,8 @@ class NewProfileForm(forms.Form):
     password = forms.CharField(label="Password", widget=forms.PasswordInput, required=True)
     email = forms.EmailField(label="Email", required=True)
     display_name = forms.CharField(label="Displaye Name", required=True)
+
+class NewTaskForm(forms.ModelForm):
+    class Meta:
+        model = Task
+        fields = ['title', 'text', 'category',]

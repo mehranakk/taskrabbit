@@ -23,6 +23,7 @@ urlpatterns = [
     url(r'^take_task/(?P<task_id>[0-9]+)/$', 'catalogue.views.take_task', name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
+    url(r'^new_task/$', 'catalogue.views.new_task'),
     url(r'^accounts/profile/$', 'catalogue.views.profile'),
     url(r'^accounts/history/$', 'catalogue.views.history'),
     url(r'^accounts/comments/$', 'catalogue.views.comments'),
