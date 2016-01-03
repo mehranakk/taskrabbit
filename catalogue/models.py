@@ -12,8 +12,7 @@ class Skill(models.Model):
 class MyUser(models.Model):
     user = models.OneToOneField(User)
     display_name = models.CharField(max_length=50)
-    #picture = models.ImageField(upload_to='profile_pictures', null=True, blank=True)
-    skills = models.ManyToManyField(Skill)
+    skills = models.ManyToManyField(Skill, blank=True)
     def __unicode__(self):
         return self.display_name
 
