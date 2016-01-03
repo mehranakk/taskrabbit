@@ -16,7 +16,7 @@ def home(request, category='all'):
         tasks = Task.objects.all()
     else:
         tasks = Task.objects.filter(category__slug=category)
-    context = {'request': request, 'tasks':tasks, 'categories':Category.objects.all(), 'selected_category':category}
+    context = {'request': request, 'tasks': tasks, 'categories':Category.objects.all(), 'selected_category':category}
     return render_to_response("tasks.html", context)
 
 
@@ -32,17 +32,11 @@ def take_task(request, task_id):
 
 
 @login_required
-def profile(request, user_id):
-    u = get_object_or_404(MyUser, pk=user_id)
-    is_profile_owner = False
-    is_following = False
-    if u.id == request.user.id:
-        is_profile_owner = True
-    else:
-        if request.user.myuser.following.filter(id=u.id).count():
-            is_following = True
-    return render_to_response("profile.html", {'request': request, 'user': u, 'is_profile_owner': is_profile_owner,
-                                               'is_following': is_following, })
+def profile(request):
+    context = {
+        'user': MyUser.objects.get(user=request.user),
+    }
+    return render_to_response("profile.html", context)
 
 @login_required
 def edit_profile(request):
@@ -72,8 +66,3 @@ def signup(request):
 
     form = NewProfileForm()
     return render_to_response('registration/signup.html', {'form': form}, context_instance=RequestContext(request))
-
-
-
-
-
