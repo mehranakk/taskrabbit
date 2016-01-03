@@ -1,13 +1,13 @@
 {%  extends "base.html" %}
 {% block content %}
     <div class="row">
-        <div id="profile-image" class="col-md-4">
-            {% if user.myuser.picture %}
-                <img src="/{{ user.myuser.picture.url }}" class="img-responsive"/>
-            {% else %}
-                <img src="/media/profile_pictures/default.png" class="img-responsive"/>
-            {% endif %}
-        </div>
+{#        <div id="profile-image" class="col-md-4">#}
+{#            {% if user.myuser.picture %}#}
+{#                <img src="/{{ user.myuser.picture.url }}" class="img-responsive"/>#}
+{#            {% else %}#}
+{#                <img src="/media/profile_pictures/default.png" class="img-responsive"/>#}
+{#            {% endif %}#}
+{#        </div>#}
         {% if not is_profile_owner %}
             {% if is_following %}
                 <a href="/unfollow/{{ user.id }}">UnFollow</a>
@@ -27,14 +27,26 @@
     <br>
     {% if is_profile_owner %}
         <a href="/accounts/edit/">Edit</a>
+	<hr>
+        <br>
+        Skills:
+        <div class="row">
+            <div id="skills" class="col-md-5">
+                <table class="table">
+                    {% for skill in user.myuser.skills.all %}
+                        <tr><td> {{ skill.name }}</td><td>{{skill.commends}}</td></tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
         <hr>
         <br>
         Following:
         <div class="row">
             <div id="following" class="col-md-5">
                 <table class="table">
-                    {% for u in user.myuser.following.all %}
-                        <tr><td>Name: <a href='/accounts/profile/{{ u.id }}'>{{ u.myuser.display_name }}</a></td></tr>
+                    {% for user in user.myuser.following.all %}
+                        <tr><td>Name: <a href='/accounts/profile/{{ user.id }}'>{{ user.myuser.display_name }}</a></td></tr>
                     {% endfor %}
                 </table>
             </div>

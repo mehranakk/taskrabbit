@@ -1,11 +1,20 @@
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
+from catalogue.models import MyUser
+from django.http import HttpRequest, HttpResponseRedirect
 
+
+
+def kasesher(request):
+    is_logged_in = False
+    if request.user.is_authenticated():
+        is_logged_in = True
+    return render_to_response('base.html', context={'is_logged_in': is_logged_in})
 
 @login_required
 def profile(request, user_id):
-    u = get_object_or_404(User, pk=user_id)
+    u = get_object_or_404(MyUser, pk=user_id)
     is_profile_owner = False
     is_following = False
     if u.id == request.user.id:
