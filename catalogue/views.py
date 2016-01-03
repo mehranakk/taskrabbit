@@ -8,9 +8,12 @@ from django.http import HttpRequest, HttpResponseRedirect
 from catalogue.models import *
 
 
-def home(request):
-    tasks = Task.objects.all()
-    context = {'request': request, 'tasks':tasks}
+def home(request, category='all'):
+    if category == 'all':
+        tasks = Task.objects.all()
+    else:
+        tasks = Task.objects.filter(category__slug=category)
+    context = {'request': request, 'tasks':tasks, 'categories':Category.objects.all(), 'selected_category':category}
     return render_to_response("tasks.html", context)
 
 
@@ -24,13 +27,6 @@ def take_task(request, task_id):
     newTaskRequest.save()
     return HttpResponseRedirect('/')
 
-
-
-def kasesher(request):
-    is_logged_in = False
-    if request.user.is_authenticated():
-        is_logged_in = True
-    return render_to_response('base.html', context={'is_logged_in': is_logged_in})
 
 @login_required
 def profile(request, user_id):
