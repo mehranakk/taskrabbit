@@ -1,5 +1,10 @@
 {%  extends "base.html" %}
 {% block content %}
+    <ul class="nav nav-tabs">
+        <li role="presentation" class="active"><a href="/accounts/profile/">Profile</a></li>
+        <li role="presentation" ><a href="/accounts/history/">History</a></li>
+        <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
+    </ul>
     <div class="row">
         <div id="info" class="col-md-10">
             User Name: {{ user.display_name }}

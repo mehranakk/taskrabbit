@@ -66,3 +66,13 @@ def signup(request):
 
     form = NewProfileForm()
     return render_to_response('registration/signup.html', {'form': form}, context_instance=RequestContext(request))
+
+
+@login_required
+def history(request):
+    return render_to_response('history.html', {})
+
+
+@login_required
+def comments(request):
+    return render_to_response('comments.html', {})
