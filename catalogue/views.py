@@ -70,7 +70,11 @@ def signup(request):
 
 @login_required
 def history(request):
-    return render_to_response('history.html', {})
+    tasks_as_employee = Task.objects.filter(employee__user=request.user)
+    tasks_as_employer = Task.objects.filter(employer__user=request.user)
+    requested_tasks = TaskRequest.objects.filter(employee__user=request.user)
+    return render_to_response('history.html', {'tasks_as_employee': tasks_as_employee, 'tasks_as_employer':tasks_as_employer,
+            'requested_tasks': requested_tasks})
 
 
 @login_required

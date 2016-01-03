@@ -6,8 +6,57 @@
         <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
     </ul>
     <div class="row">
-        <div class="col-md-4 col-md-offset-4">
-            {{ error }}
+        <div class="col-md-12">
+            Tasks as emloyee:
+            <table class='table'>
+                {% if not tasks_as_employee %}
+                    None
+                {% else %}
+                    {% for t in tasks_as_employee %}
+                    <tr>
+                        <td>t.title</td>
+                        <td>t.status</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            Tasks as emloyer:
+            <table class='table'>
+                {% if not tasks_as_employer %}
+                    None
+                {% else %}
+                    {% for t in tasks_as_employer %}
+                    <tr>
+                        <td>t.title</td>
+                        <td>t.status</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-md-12">
+            Requested Tasks:
+            <table class='table'>
+                {% if not requested_tasks %}
+                    None
+                {% else %}
+                    {% for t in requested_tasks %}
+                    <tr>
+                        <td>t.task.title</td>
+                        <td>t.task.status</td>
+                    </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
         </div>
    </div>
+
 {% endblock %}
