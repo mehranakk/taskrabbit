@@ -34,7 +34,7 @@
             <div id="skills" class="col-md-5">
                 <table class="table">
                     {% for skill in user.myuser.skills.all %}
-                        <tr><td> {{ skill.name }}</td><td>{{skill.commends}}</td></tr>
+                        <tr><td> {{ skill.title }}</td><td>{{skill.commend}}</td></tr>
                     {% endfor %}
                 </table>
             </div>

@@ -2,11 +2,18 @@ from django.contrib.auth.models import User
 from django.db import models
 
 
+class Skill(models.Model):
+    title = models.CharField(max_length=50)
+    commend = models.PositiveIntegerField(verbose_name="recommendations")
+    def __unicode__(self):
+        return self.text
+
+
 class MyUser(models.Model):
     user = models.OneToOneField(User)
     display_name = models.CharField(max_length=50)
     #picture = models.ImageField(upload_to='profile_pictures', null=True, blank=True)
-
+    skills = models.ManyToManyField(Skill)
     def __unicode__(self):
         return self.display_name
 
@@ -33,7 +40,6 @@ class Task(models.Model):
 class TaskRequest(models.Model):
     employee = models.ForeignKey(MyUser)
     task = models.ForeignKey(Task)
-
     def __unicode__(self):
         return self.employee.display_name
 
@@ -44,4 +50,3 @@ class Comment(models.Model):
     text = models.CharField(verbose_name="text", max_length=300, blank=True, null=True)
     def __unicode__(self):
         return self.text
-
