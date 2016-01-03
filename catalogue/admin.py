@@ -1,3 +1,10 @@
 from django.contrib import admin
 
-# Register your models here.
+from catalogue.models import *
+
+admin.site.register(Task)
+admin.site.register(MyUser)
+admin.site.register(Comment)
+admin.site.register(TaskRequest)
+
+

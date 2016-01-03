@@ -1,0 +1,25 @@
+{%  extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div id="employer_name" class="col-md-4">
+            {{ employer.display_name }}
+        </div>
+        <div id="title" class="col-md-4">
+            {{ title }} 
+        </div>
+        <div id="upload_date" class="col-md-4">
+            {{ upload_date }}
+        </div>
+    </div>
+    <div class="row">
+        <div id="description" class="col-md-12">
+            {{ text }}
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div id="take_it" class="col-md-12">
+            <a href="/take_task/{{ task_id }}/">Take It!</a>
+        </div>
+    </div>
+{% endblock %}

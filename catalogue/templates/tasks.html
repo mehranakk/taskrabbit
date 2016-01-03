@@ -1,0 +1,24 @@
+{%  extends "base.html" %}
+{% block content %}
+    <div class="row">
+        <div id="posts" class="col-md-9">
+            <table class="table">
+                {%  for task in tasks %}
+                    <tr><td>
+                        {%  with task.employer as employer %}
+                        {%  with task.text as text %}
+                        {%  with task.title as title %}
+                        {%  with task.upload_date as upload_date %}
+                        {%  with task.id as task_id %}
+                            {% include "task.html" %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                        {% endwith %}
+                    </tr></td>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

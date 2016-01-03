@@ -17,7 +17,8 @@ from django.contrib import admin, auth
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    url(r'^$', 'catalogue.views.kasesher', name='kaseshare'),
+    url(r'^$', 'catalogue.views.home', name='home'),
+    url(r'^take_task/(?P<task_id>[0-9]+)/$', 'catalogue.views.take_task', name='home'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^accounts/', include('django.contrib.auth.urls')),
     url(r'^accounts/profile/(?P<user_id>[0-9]+)$', 'catalogue.views.profile'),

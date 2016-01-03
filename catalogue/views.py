@@ -1,8 +1,28 @@
+from django.http.response import HttpResponseNotFound, HttpResponseRedirect, HttpResponseForbidden
 from django.shortcuts import render
 from django.shortcuts import render_to_response, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from catalogue.models import MyUser
 from django.http import HttpRequest, HttpResponseRedirect
+
+from catalogue.models import *
+
+
+def home(request):
+    tasks = Task.objects.all()
+    context = {'request': request, 'tasks':tasks}
+    return render_to_response("tasks.html", context)
+
+
+@login_required
+def take_task(request, task_id):
+    employee = MyUser.objects.get(user=request.user)
+    tasks = TaskRequest.objects.filter(employee=employee, task=task_id)
+    if tasks.count() != 0:
+        return render_to_response('error.html', {'error': 'You have failed this city'})
+    newTaskRequest = TaskRequest.objects.create(employee=employee, task=Task.objects.get(id=task_id))
+    newTaskRequest.save()
+    return HttpResponseRedirect('/')
 
 
 
