@@ -7,6 +7,9 @@
         {% if form.errors %}
         <p>You have errors </p>
         {% endif %}
+        {% if error %}
+        <p> {{ error }} </p>
+        {% endif %}
 
         <form method="post" action="/accounts/signup/">
         {% csrf_token %}

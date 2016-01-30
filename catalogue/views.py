@@ -34,7 +34,7 @@ def home(request, category='all'):
         'best_employees': best_employees,
         'total_home_visits': REDIS_CLIENT.get('home'),
     }
-    return render_to_response("home.html", context)
+    return render_to_response("home.html", context, context_instance=RequestContext(request))
 
 
 @login_required
@@ -79,6 +79,10 @@ def signup(request):
         form = NewProfileForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
+            user_if_any = MyUser.objects.filter(user__username=username)
+            if len(user_if_any) > 0:
+                return render_to_response('registration/signup.html', {'form': form, 'error':'User Already Exists'}, context_instance=RequestContext(request))
+
             password = form.cleaned_data['password']
             email = form.cleaned_data['email']
             display_name = form.cleaned_data['display_name']
@@ -89,7 +93,7 @@ def signup(request):
             return HttpResponseRedirect('/')
 
     form = NewProfileForm()
-    return render_to_response('registration/signup.html', {'form': form}, context_instance=RequestContext(request))
+    return render_to_response('registration/signup.html', {'form': form, 'error':''}, context_instance=RequestContext(request))
 
 
 @login_required
