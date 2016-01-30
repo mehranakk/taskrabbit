@@ -81,7 +81,7 @@ def signup(request):
             user.save()
             myUser = MyUser.objects.create(user=user, display_name=display_name)
             myUser.save()
-            return HttpResponseRedirect('/all/')
+            return HttpResponseRedirect('/')
 
     form = NewProfileForm()
     return render_to_response('registration/signup.html', {'form': form}, context_instance=RequestContext(request))
