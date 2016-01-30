@@ -4,7 +4,7 @@
     <div><strong>Top Searches:</strong></div>
     <ul>
         {% for top_search_query in top_search_queries %}
-        <li>{{ top_search_query.text }}</li>
+        <li>{{ top_search_query.text }}  {{ top_search_query.text__count }}</li>
         {% endfor %}
     </ul>
 </div>
@@ -12,7 +12,7 @@
     <div><strong>Employers with Most Tasks:</strong></div>
     <ul>
         {% for most_posted_employer in most_posted_employers %}
-        <li>{{ most_posted_employer.display_name }}</li>
+        <li>{{ most_posted_employer.display_name }}  {{ most_posted_employer.task_employer__count }}</li>
         {% endfor %}
     </ul>
 </div>
