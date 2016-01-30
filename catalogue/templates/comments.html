@@ -12,7 +12,7 @@
             </div>
             <ui>
                 {% for comment in comments_about_you %}
-                    {{ comment.employer }} said: {{ comment.text }}
+                    <li>{{ comment.employer }} said: {{ comment.text }}</li>
                 {% endfor %}
             </ui>
             <div>
@@ -20,7 +20,7 @@
             </div>
             <ui>
                 {% for comment in your_comments %}
-                    about {{ comment.employee }}: {{ comment.text }}
+                    <li>about {{ comment.employee }}: {{ comment.text }}</li>
                 {% endfor %}
             </ui>
         </div>
