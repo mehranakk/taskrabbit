@@ -1,25 +1,41 @@
 from datetime import datetime
 
-from django.http.response import HttpResponseNotFound, HttpResponseRedirect, HttpResponseForbidden
-from django.shortcuts import render
-from django.shortcuts import render_to_response, get_object_or_404
+from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
-from django.http import HttpRequest, HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.template import RequestContext, Context
+from django.http import HttpResponseRedirect
+from django.template import RequestContext
+from django.db.models import Count, Avg
 
 
 from catalogue.models import *
 from catalogue.forms import *
 
 
+@login_required
 def home(request, category='all'):
-    if category == 'all':
-        tasks = Task.objects.all()
-    else:
-        tasks = Task.objects.filter(category__slug=category)
-    context = {'request': request, 'tasks': tasks, 'categories':Category.objects.all(), 'selected_category':category}
-    return render_to_response("tasks.html", context)
+    # if category == 'all':
+    #     tasks = Task.objects.all()
+    # else:
+    #     tasks = Task.objects.filter(category__slug=category)
+    # context = {'request': request, 'tasks': tasks, 'categories':Category.objects.all(), 'selected_category':category}
+    # return render_to_response("tasks.html", context)
+
+    top_search_queries = SearchQuery.objects.values('text').annotate(Count('text')).order_by('-text__count')[:5]
+    most_posted_employers = MyUser.objects.annotate(Count('task_employer')).filter(task_employer__count__gt=0).order_by('-task_employer__count')[:5]
+    employees = MyUser.objects.annotate(Count('task_employee')).filter(task_employee__count__gt=0)
+    best_employees = employees.annotate(Avg('comment_employee__rate'))
+    context = {
+        'top_search_queries': top_search_queries,
+        'most_posted_employers': most_posted_employers,
+        'best_employees': best_employees,
+    }
+    return render_to_response("home.html", context)
+
+
+@login_required
+def search(request):
+    SearchQuery.objects.create(text=request.GET['query'])
+    return HttpResponseRedirect('/')
 
 
 @login_required
@@ -42,6 +58,7 @@ def profile(request):
     }
     return render_to_response("profile.html", context)
 
+
 @login_required
 def edit(request):
     user = MyUser.objects.get(user=request.user)
@@ -51,7 +68,7 @@ def edit(request):
     }
     return render_to_response('edit.html', context)
 
-@login_required
+
 def signup(request):
     if request.method == "POST":
         form = NewProfileForm(request.POST)
@@ -75,7 +92,7 @@ def history(request):
     tasks_as_employee = Task.objects.filter(employee__user=request.user)
     tasks_as_employer = Task.objects.filter(employer__user=request.user)
     requested_tasks = TaskRequest.objects.filter(employee__user=request.user)
-    return render_to_response('history.html', {'tasks_as_employee': tasks_as_employee, 'tasks_as_employer':tasks_as_employer,
+    return render_to_response('history.html', {'tasks_as_employee': tasks_as_employee, 'tasks_as_employer': tasks_as_employer,
             'requested_tasks': requested_tasks})
 
 
@@ -98,8 +115,7 @@ def new_task(request):
             title = form.cleaned_data['title']
             text = form.cleaned_data['text']
             category = form.cleaned_data['category']
-            task = Task.objects.create(employer=employer, title=title, text=text, upload_date=datetime.now(),
-                    category=category, status='N')
+            task = Task.objects.create(employer=employer, title=title, text=text, upload_date=datetime.now(), category=category, status='N')
             task.save()
 
         return HttpResponseRedirect('/')

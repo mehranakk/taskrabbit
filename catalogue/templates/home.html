@@ -1,0 +1,27 @@
+{%  extends "base.html" %}
+{% block content %}
+<div>
+    <div><strong>Top Searches:</strong></div>
+    <ul>
+        {% for top_search_query in top_search_queries %}
+        <li>{{ top_search_query.text }}</li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <div><strong>Employers with Most Tasks:</strong></div>
+    <ul>
+        {% for most_posted_employer in most_posted_employers %}
+        <li>{{ most_posted_employer.display_name }}</li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <div><strong>Best Employees:</strong></div>
+    <ul>
+        {% for best_employee in best_employees %}
+        <li>{{ best_employee.display_name }} {{ best_employee.comment_employee__rate__avg }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
