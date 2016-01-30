@@ -1,10 +1,13 @@
 from django import forms
-from .models import MyUser, Task
+from .models import MyUser, Task, Skill
 
 class EditProfileForm(forms.ModelForm):
     class Meta:
         model = MyUser
-        fields = ['display_name',]
+        fields = ['display_name', 'skills']
+       # widgets = {
+       #         'skills': forms.ChoiceField(choices=Skill.objects.all())
+       #     }
 
 class NewProfileForm(forms.Form):
     username = forms.CharField(label="Username", required=True)

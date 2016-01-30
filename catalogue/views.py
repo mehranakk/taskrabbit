@@ -1,4 +1,3 @@
-import redis
 from datetime import datetime
 
 from django.shortcuts import render_to_response
@@ -7,11 +6,9 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.db.models import Count, Avg
 
+
 from catalogue.models import *
 from catalogue.forms import *
-
-
-REDIS_CLIENT = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 
 @login_required
@@ -20,19 +17,17 @@ def home(request, category='all'):
     #     tasks = Task.objects.all()
     # else:
     #     tasks = Task.objects.filter(category__slug=category)
-    # context = {'request': request, 'tasks': tasks, 'categories':Category.obje
+    # context = {'request': request, 'tasks': tasks, 'categories':Category.objects.all(), 'selected_category':category}
     # return render_to_response("tasks.html", context)
 
-    REDIS_CLIENT.incr('home', 1)
     top_search_queries = SearchQuery.objects.values('text').annotate(Count('text')).order_by('-text__count')[:5]
     most_posted_employers = MyUser.objects.annotate(Count('task_employer')).filter(task_employer__count__gt=0).order_by('-task_employer__count')[:5]
     employees = MyUser.objects.annotate(Count('task_employee')).filter(task_employee__count__gt=0)
-    best_employees = employees.annotate(Avg('comment_employee__rate')).order_by('-comment_employee__rate__avg')[:5]
+    best_employees = employees.annotate(Avg('comment_employee__rate'))
     context = {
         'top_search_queries': top_search_queries,
         'most_posted_employers': most_posted_employers,
         'best_employees': best_employees,
-        'total_home_visits': REDIS_CLIENT.get('home'),
     }
     return render_to_response("home.html", context, context_instance=RequestContext(request))
 
@@ -67,11 +62,18 @@ def profile(request):
 @login_required
 def edit(request):
     user = MyUser.objects.get(user=request.user)
+    if request.method == "POST":
+        form = EditProfileForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            return HttpResponseRedirect('/accounts/profile/')
+    form = EditProfileForm(instance=user)
     context = {
         'user': user,
-        'skills': user.skills.all(),
+        'form': form,
+        'error': '',
     }
-    return render_to_response('edit.html', context, context_instance=RequestContext(request))
+    return render_to_response('edit_profile.html', context, context_instance=RequestContext(request))
 
 
 def signup(request):
