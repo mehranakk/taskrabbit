@@ -14,8 +14,8 @@
                 {% else %}
                     {% for t in tasks_as_employee %}
                     <tr>
-                        <td>t.title</td>
-                        <td>t.status</td>
+                        <td>{{ t.title }}</td>
+                        <td>{{ t.status }}</td>
                     </tr>
                     {% endfor %}
                 {% endif %}
@@ -32,8 +32,8 @@
                 {% else %}
                     {% for t in tasks_as_employer %}
                     <tr>
-                        <td>t.title</td>
-                        <td>t.status</td>
+                        <td>{{ t.title }}</td>
+                        <td>{{ t.status }}</td>
                     </tr>
                     {% endfor %}
                 {% endif %}
@@ -50,8 +50,8 @@
                 {% else %}
                     {% for t in requested_tasks %}
                     <tr>
-                        <td>t.task.title</td>
-                        <td>t.task.status</td>
+                        <td>{{ t.task.title }}</td>
+                        <td>{{ t.task.status }}</td>
                     </tr>
                     {% endfor %}
                 {% endif %}

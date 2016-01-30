@@ -61,7 +61,7 @@ def profile(request):
         'user': user,
         'skills': user.skills.all(),
     }
-    return render_to_response("profile.html", context)
+    return render_to_response("profile.html", context, context_instance=RequestContext(request))
 
 
 @login_required
@@ -71,7 +71,7 @@ def edit(request):
         'user': user,
         'skills': user.skills.all(),
     }
-    return render_to_response('edit.html', context)
+    return render_to_response('edit.html', context, context_instance=RequestContext(request))
 
 
 def signup(request):
@@ -101,8 +101,12 @@ def history(request):
     tasks_as_employee = Task.objects.filter(employee__user=request.user)
     tasks_as_employer = Task.objects.filter(employer__user=request.user)
     requested_tasks = TaskRequest.objects.filter(employee__user=request.user)
-    return render_to_response('history.html', {'tasks_as_employee': tasks_as_employee, 'tasks_as_employer': tasks_as_employer,
-            'requested_tasks': requested_tasks})
+    context = {
+        'tasks_as_employee': tasks_as_employee,
+        'tasks_as_employer': tasks_as_employer,
+        'requested_tasks': requested_tasks,
+    }
+    return render_to_response('history.html', context, context_instance=RequestContext(request))
 
 
 @login_required
@@ -112,7 +116,7 @@ def comments(request):
         'your_comments': Comment.objects.filter(employer=user),
         'comments_about_you': Comment.objects.filter(employee=user),
     }
-    return render_to_response('comments.html', context)
+    return render_to_response('comments.html', context, context_instance=RequestContext(request))
 
 
 @login_required
