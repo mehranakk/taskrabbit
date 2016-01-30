@@ -58,7 +58,7 @@ class Comment(models.Model):
     employer = models.ForeignKey(MyUser, verbose_name="employer", related_name='comment_employer')
     employee = models.ForeignKey(MyUser, verbose_name="employee", related_name='comment_employee')
     rate = models.PositiveIntegerField(verbose_name="rate")
-    text = models.CharField(verbose_name="text", max_length=300, blank=True, null=True)
+    text = models.CharField(verbose_name="text", max_length=300, default="")
 
     def __unicode__(self):
         return self.text
