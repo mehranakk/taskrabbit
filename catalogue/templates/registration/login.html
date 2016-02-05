@@ -9,7 +9,7 @@
         {% endif %}
 
         <form method="post" action="{% url 'django.contrib.auth.views.login' %}">
-        {% csrf_token %}
+            {% csrf_token %}
             <div class="col-md-12">
                 <div class="form-group">
                     {# form.username.label_tag #}
@@ -33,7 +33,6 @@
                 <a href="/accounts/signup/">Don't have an account?</a>
             </div>
             <div class="col-md-6 text-right">
-                {# Assumes you setup the password_reset view in your URLconf #}
                 <a href="{% url 'password_reset' %}">Lost password?</a>
             </div>
         </form>
