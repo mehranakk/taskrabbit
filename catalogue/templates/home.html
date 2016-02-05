@@ -49,7 +49,8 @@
         <h3 class="text-center">
             {{ total_home_visits }}
             <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-            is using taskrabbit
+            {% if total_home_visits > 1 %}are{% else %}is{% endif %}
+            using taskrabbit
         </h3>
     </div>
 </div>

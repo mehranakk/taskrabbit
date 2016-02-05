@@ -33,7 +33,6 @@ def home(request, category='all'):
     return render_to_response("home.html", context, context_instance=RequestContext(request))
 
 
-@login_required
 def search(request):
     SearchQuery.objects.create(text=request.GET['query'])
     return HttpResponseRedirect('/')
