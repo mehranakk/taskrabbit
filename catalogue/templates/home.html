@@ -1,30 +1,56 @@
 {%  extends "base.html" %}
 {% block content %}
-<div>
-    <div><strong>Top Searches:</strong></div>
-    <ul>
-        {% for top_search_query in top_search_queries %}
-        <li>{{ top_search_query.text }}  {{ top_search_query.text__count }}</li>
-        {% endfor %}
-    </ul>
+<div class="row">
+    <div class="col-md-4">
+        <h4>Top Searches:</h4>
+        <ul class="list-group">
+            {% for top_search_query in top_search_queries %}
+            <li class="list-group-item">
+                {{ top_search_query.text }}
+                <span class="badge">
+                    {{ top_search_query.text__count }}
+                    <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h4>Employers with Most Tasks:</h4>
+        <ul class="list-group">
+            {% for most_posted_employer in most_posted_employers %}
+            <li class="list-group-item">
+                {{ most_posted_employer.display_name }}
+                <span class="badge">
+                    {{ most_posted_employer.task_employer__count }}
+                    <span class="glyphicon glyphicon-list-alt" aria-hidden="true"></span>
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <h4>Best Employees:</h4>
+        <ul class="list-group">
+            {% for best_employee in best_employees %}
+            <li class="list-group-item">
+                {{ best_employee.display_name }}
+                <span class="badge">
+                    {{ best_employee.comment_employee__rate__avg }}
+                    <span class="glyphicon glyphicon-star" aria-hidden="true"></span>
+                </span>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </div>
-<div>
-    <div><strong>Employers with Most Tasks:</strong></div>
-    <ul>
-        {% for most_posted_employer in most_posted_employers %}
-        <li>{{ most_posted_employer.display_name }}  {{ most_posted_employer.task_employer__count }}</li>
-        {% endfor %}
-    </ul>
-</div>
-<div>
-    <div><strong>Best Employees:</strong></div>
-    <ul>
-        {% for best_employee in best_employees %}
-        <li>{{ best_employee.display_name }} {{ best_employee.comment_employee__rate__avg }}</li>
-        {% endfor %}
-    </ul>
-</div>
-<div>
-    <div><strong>Total Visits:</strong> {{ total_home_visits }}</div>
+<div class="row">
+    <div class="col-md-12">
+        <h3 class="text-center">
+            {{ total_home_visits }}
+            <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+            use taskrabbit
+        </h3>
+    </div>
 </div>
 {% endblock %}
