@@ -1,28 +1,32 @@
 {%  extends "base.html" %}
 {% block content %}
-    <ul class="nav nav-tabs">
-        <li role="presentation" class="active"><a href="/accounts/profile/">Profile</a></li>
-        <li role="presentation" ><a href="/accounts/history/">History</a></li>
-        <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
-    </ul>
     <div class="row">
-        <div id="info" class="col-md-10">
+        <div class="col-md-6 col-md-offset-3">
+            <ul class="nav nav-tabs">
+                <li role="presentation" class="active"><a href="/accounts/profile/">Profile</a></li>
+                <li role="presentation"><a href="/accounts/history/">History</a></li>
+                <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
+            </ul>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
             <div>
-                <strong>User Name:</strong> <i>{{ user.display_name }}</i>
+                <h4>User Name</h4>
+                <i>{{ user.display_name }}</i>
             </div>
             <div>
-                <strong>Skills:</strong>
+                <h4>Skills</h4>
             </div>
-            <ul>
+            <ul class="list-group">
                 {% for skill in skills %}
-                    <li>
-                        {{ skill.title }}
-                    </li>
+                <li class="list-group-item">
+                    {{ skill.title }}
+                </li>
                 {% endfor %}
             </ul>
         </div>
-        <div id="edit" class="col-md-2">
+        <div class="col-md-6 col-md-offset-3 text-center">
             <a class="btn btn-default" href="/accounts/edit/" role="button">
+                Edit Profile
                 <span class="glyphicon glyphicon-edit" aria-hidden="true"></span>
             </a>
         </div>

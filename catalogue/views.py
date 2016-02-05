@@ -72,6 +72,8 @@ def edit(request):
         'user': user,
         'form': form,
         'error': '',
+        'skills': Skill.objects.all(),
+        'user_skills': user.skills.get_queryset(),
     }
     return render_to_response('edit_profile.html', context, context_instance=RequestContext(request))
 
@@ -135,4 +137,5 @@ def new_task(request):
 
         return HttpResponseRedirect('/')
     form = NewTaskForm()
-    return render_to_response('new_task.html', {'form': form}, context_instance=RequestContext(request))
+    categories = Category.objects.all()
+    return render_to_response('new_task.html', {'form': form, 'categories': categories}, context_instance=RequestContext(request))

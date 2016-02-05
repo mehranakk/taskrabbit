@@ -24,7 +24,9 @@
                     <input class="form-control" type="text" id="id_text" name="text" placeholder="I have dragons in my backyard..." />
                     <label for="id_category">Category</label>
                     <select id="id_category" name="category" class="form-control">
-                        <option value="1">all</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}">{{ category.name }}</option>
+                        {% endfor %}
                     </select>
                 </div>
                 <input type="hidden" name="next" value="/" />

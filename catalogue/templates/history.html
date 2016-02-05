@@ -1,62 +1,81 @@
 {%  extends "base.html" %}
 {% block content %}
-    <ul class="nav nav-tabs">
-        <li role="presentation"><a href="/accounts/profile/">Profile</a></li>
-        <li role="presentation" class="active"><a href="/accounts/history/">History</a></li>
-        <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
-    </ul>
     <div class="row">
-        <div class="col-md-12">
-            <strong>Tasks as employee:</strong>
-            <table class='table'>
-                {% if not tasks_as_employee %}
+        <div class="col-md-6 col-md-offset-3">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="/accounts/profile/">Profile</a></li>
+                <li role="presentation" class="active"><a href="/accounts/history/">History</a></li>
+                <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
+            </ul>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <h4>Tasks as employee</h4>
+            {% if not tasks_as_employee %}
                     None
-                {% else %}
-                    {% for t in tasks_as_employee %}
-                    <tr>
-                        <td>{{ t.title }}</td>
-                        <td>{{ t.status }}</td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-            </table>
+            {% else %}
+                <ul class="list-group">
+                {% for t in tasks_as_employee %}
+                    <li class="list-group-item">
+                        {{ t.title }}
+                        <span class="badge">
+                            {% if t.status == 'N' %}
+                                New
+                            {% elif t.status == 'D' %}
+                                Done
+                            {% elif t.status == 'A' %}
+                                Assigned
+                            {% endif %}
+                        </span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <h4>Tasks as employer</h4>
+            {% if not tasks_as_employer %}
+                None
+            {% else %}
+                <ul class="list-group">
+                {% for t in tasks_as_employer %}
+                    <li class="list-group-item">
+                        {{ t.title }}
+                        <span class="badge">
+                            {% if t.status == 'N' %}
+                                New
+                            {% elif t.status == 'D' %}
+                                Done
+                            {% elif t.status == 'A' %}
+                                Assigned
+                            {% endif %}
+                        </span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <h4>Requested Tasks</h4>
+            {% if not requested_tasks %}
+                None
+            {% else %}
+                <ul class="list-group">
+                {% for t in requested_tasks %}
+                    <li class="list-group-item">
+                        {{ t.task.title }}
+                        <span class="badge">
+                            {% if t.task.status == 'N' %}
+                                New
+                            {% elif t.task.status == 'D' %}
+                                Done
+                            {% elif t.task.status == 'A' %}
+                                Assigned
+                            {% endif %}
+                        </span>
+                    </li>
+                {% endfor %}
+                </ul>
+            {% endif %}
         </div>
     </div>
-    <br>
-    <div class="row">
-        <div class="col-md-12">
-            <strong>Tasks as employer:</strong>
-            <table class='table'>
-                {% if not tasks_as_employer %}
-                    None
-                {% else %}
-                    {% for t in tasks_as_employer %}
-                    <tr>
-                        <td>{{ t.title }}</td>
-                        <td>{{ t.status }}</td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-            </table>
-        </div>
-    </div>
-    <br>
-    <div class="row">
-        <div class="col-md-12">
-            <strong>Requested Tasks:</strong>
-            <table class='table'>
-                {% if not requested_tasks %}
-                    None
-                {% else %}
-                    {% for t in requested_tasks %}
-                    <tr>
-                        <td>{{ t.task.title }}</td>
-                        <td>{{ t.task.status }}</td>
-                    </tr>
-                    {% endfor %}
-                {% endif %}
-            </table>
-        </div>
-   </div>
-
 {% endblock %}
