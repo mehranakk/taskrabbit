@@ -53,6 +53,12 @@
                                 Assigned
                             {% endif %}
                         </span>
+                    {% if t.status == 'A' %}
+                        <form action='/done_task/{{t.id}}/' method='POST'>
+                            {% csrf_token %}
+                            <button type='submit' value='Done'> Done </button>
+                        </form>
+                    {% endif %}
                     </li>
                 {% endfor %}
                 </ul>

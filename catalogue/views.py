@@ -166,6 +166,15 @@ def accept_request(request, task_request_id):
 
 
 @login_required
+def done_task(request, task_id):
+    user = MyUser.objects.get(user=request.user)
+    task = Task.objects.get(id=task_id)
+    task.status = 'D'
+    task.save()
+    return HttpResponseRedirect('/accounts/profile')
+
+
+@login_required
 def new_task(request):
     employer = MyUser.objects.get(user=request.user)
     if request.method == "POST":
