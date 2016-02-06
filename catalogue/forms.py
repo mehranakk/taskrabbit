@@ -1,5 +1,5 @@
 from django import forms
-from .models import MyUser, Task, Skill
+from .models import MyUser, Task, Skill, Comment
 
 
 class EditProfileForm(forms.ModelForm):
@@ -22,3 +22,9 @@ class NewTaskForm(forms.ModelForm):
     class Meta:
         model = Task
         fields = ['title', 'text', 'category',]
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['rate', 'text',]

@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block title %}New Task{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+        {% if form.errors %}
+        <p>You have errors </p>
+        {% endif %}
+
+        <form method="post" action="/comment_employee/{{employee.id}}/">
+            {% csrf_token %}
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label for="id_text">Please comment {{ employee.display_name }}</label>
+                    <input class="form-control" type="text" id="id_text" name="text" placeholder="Was the best employee" />
+                    <label for="id_rate">Rate</label>
+                    <select id="id_rate" name="rate" class="form-control">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                    </select>
+                </div>
+                <input type="hidden" name="next" value="/" />
+                <div class="text-center">
+                    <button type="submit" class="btn btn-default">
+                        Submit Comment
+                        <span class="glyphicon glyphicon-list-alt"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

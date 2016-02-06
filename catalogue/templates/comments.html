@@ -18,6 +18,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><i><strong>{{ comment.employer.display_name }}</strong></i> said:</div>
                     <div class="panel-body">
+                        Rate: {{ comment.rate }} <br>
                         {{ comment.text }}
                     </div>
                 </div>
@@ -29,6 +30,7 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">about <i><strong>{{ comment.employee.display_name }}</strong></i>:</div>
                     <div class="panel-body">
+                        Rate: {{ comment.rate }} <br>
                         {{ comment.text }}
                     </div>
                 </div>

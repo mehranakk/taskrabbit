@@ -182,7 +182,27 @@ def done_task(request, task_id):
     task = Task.objects.get(id=task_id)
     task.status = 'D'
     task.save()
-    return HttpResponseRedirect('/accounts/profile')
+    return HttpResponseRedirect('/comment_employee/%d' % task.employee.id)
+
+
+@login_required
+def comment_employee(request, employee_id):
+    employer = MyUser.objects.get(user=request.user)
+    employee = MyUser.objects.get(id=employee_id)
+    tasks = Task.objects.filter(employer=employer, employee=employee, status='D')
+    if not tasks:
+        return HttpResponseNotAllowed()
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.employer = employer
+            comment.employee = employee
+            comment.save()
+
+        return HttpResponseRedirect('/accounts/profile')
+    form = CommentForm()
+    return render_to_response('comment_employee.html', {'form': form, 'employee':employee}, context_instance=RequestContext(request))
 
 
 @login_required
