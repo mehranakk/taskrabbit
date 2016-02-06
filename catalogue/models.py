@@ -57,8 +57,8 @@ class TaskRequest(models.Model):
 class Comment(models.Model):
     employer = models.ForeignKey(MyUser, verbose_name="employer", related_name='comment_employer')
     employee = models.ForeignKey(MyUser, verbose_name="employee", related_name='comment_employee')
-    rate = models.PositiveIntegerField(verbose_name="rate")
-    text = models.CharField(verbose_name="text", max_length=300, default="")
+    rate = models.PositiveIntegerField(verbose_name="rate", null=True, blank=True)
+    text = models.CharField(verbose_name="text", max_length=300, default="", null=True, blank=True)
 
     def __unicode__(self):
         return self.text
