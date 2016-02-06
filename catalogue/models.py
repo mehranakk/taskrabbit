@@ -13,6 +13,7 @@ class MyUser(models.Model):
     user = models.OneToOneField(User)
     display_name = models.CharField(max_length=50)
     skills = models.ManyToManyField(Skill, blank=True)
+    is_admin = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.display_name

@@ -1,0 +1,41 @@
+{%  extends "base.html" %}
+
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="/accounts/profile/">Profile</a></li>
+                <li role="presentation"><a href="/accounts/history/">History</a></li>
+                <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
+                <li role="presentation"><a href="/accounts/manage_task_requests/">Task Requests</a></li>
+                {% if user.is_admin %}
+                    <li role="presentation" class="active"><a href="/accounts/manage_users/">Users</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            <ul class="list-group">
+            {% for other_user in users %}
+                <li class="list-group-item">
+                    <h4>User</h4>
+                    <i><strong>{{ other_user.display_name }}</strong></i>
+                    <div class="text-center">
+                        {% if not other_user.is_admin %}
+                        <form method="post" action="/delete_user/">
+                            {% csrf_token %}
+                            <input type="hidden" name="user_id" value="{{ other_user.id }}">
+                            <button type='submit' class="btn btn-default">
+                                Remove
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+            </ul>
+        </div>
+   </div>
+{% endblock %}
