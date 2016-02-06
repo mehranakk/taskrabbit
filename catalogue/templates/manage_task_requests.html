@@ -18,11 +18,11 @@
                     <div class="panel-heading"><i><strong>{{ task }}:</strong></i></div>
                     {% for request in requests_list %}
                         <div class="panel-body">
-                            {{ request.employee }}
-                            <form action='/accept_request/{{request.id}}/' method='POST'>
-                                {% csrf_token %}
-                                <button type='submit' value='Accept'> Accept </button>
-                            </form>
+                            {{ request.employee }} 
+                            <button onclick="location.href = '/payment/{{ request.id }}';" class="btn btn-default">
+                                Accept
+                                <span class="glyphicon glyphicon-list-alt"></span>
+                            </button>
                         </div>
                     {% endfor %}
                 </div>
