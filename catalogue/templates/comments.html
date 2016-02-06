@@ -9,7 +9,10 @@
                 <li role="presentation"><a href="/accounts/profile/">Profile</a></li>
                 <li role="presentation"><a href="/accounts/history/">History</a></li>
                 <li role="presentation" class="active"><a href="/accounts/comments/">Comments</a></li>
-                <li role="presentation"><a href="/accounts/manage_task_requests/">Manage Task Requests</a></li>
+                <li role="presentation"><a href="/accounts/manage_task_requests/">Task Requests</a></li>
+                {% if user.is_admin %}
+                    <li role="presentation"><a href="/accounts/manage_users/">Users</a></li>
+                {% endif %}
             </ul>
         </div>
         <div class="col-md-6 col-md-offset-3">
@@ -18,8 +21,16 @@
                 <div class="panel panel-default">
                     <div class="panel-heading"><i><strong>{{ comment.employer.display_name }}</strong></i> said:</div>
                     <div class="panel-body">
-                        Rate: {{ comment.rate }} <br>
                         {{ comment.text }}
+                        <div class="text-center">
+                            {% for i in '12345' %}
+                                {% if forloop.counter0 < comment.rate %}
+                                    <span class="glyphicon glyphicon-star"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}
@@ -30,8 +41,16 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">about <i><strong>{{ comment.employee.display_name }}</strong></i>:</div>
                     <div class="panel-body">
-                        Rate: {{ comment.rate }} <br>
                         {{ comment.text }}
+                        <div class="text-center">
+                            {% for i in '12345' %}
+                                {% if forloop.counter0 < comment.rate %}
+                                    <span class="glyphicon glyphicon-star"></span>
+                                {% else %}
+                                    <span class="glyphicon glyphicon-star-empty"></span>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
                     </div>
                 </div>
             {% endfor %}

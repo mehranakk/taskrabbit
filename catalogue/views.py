@@ -3,11 +3,12 @@ from datetime import datetime
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseBadRequest
+from django.core.exceptions import ObjectDoesNotExist
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseBadRequest, HttpResponseForbidden
 from django.template import RequestContext
 from django.db.models import Count, Avg, Q
 from django.contrib.sessions.models import Session
-
+from django.middleware.csrf import get_token
 
 from catalogue.models import *
 from catalogue.forms import *
@@ -130,10 +131,12 @@ def signup(request):
 
 @login_required
 def history(request):
+    user = MyUser.objects.get(user=request.user)
     tasks_as_employee = Task.objects.filter(employee__user=request.user)
     tasks_as_employer = Task.objects.filter(employer__user=request.user)
     requested_tasks = TaskRequest.objects.filter(employee__user=request.user)
     context = {
+        'user': user,
         'tasks_as_employee': tasks_as_employee,
         'tasks_as_employer': tasks_as_employer,
         'requested_tasks': requested_tasks,
@@ -145,10 +148,48 @@ def history(request):
 def comments(request):
     user = MyUser.objects.get(user=request.user)
     context = {
+        'user': user,
         'your_comments': Comment.objects.filter(employer=user),
         'comments_about_you': Comment.objects.filter(employee=user),
     }
     return render_to_response('comments.html', context, context_instance=RequestContext(request))
+
+
+@login_required
+def delete_user(request):
+    if request.method == 'POST':
+        if 'user_id' in request.POST:
+            admin_user = MyUser.objects.get(user=request.user)
+            try:
+                deleted_user = MyUser.objects.get(id=request.POST['user_id'])
+                if admin_user.is_admin:
+                    if not deleted_user.is_admin:
+                        deleted_user.delete()
+                        return HttpResponseRedirect('/accounts/manage_users/')
+                    else:
+                        return HttpResponseForbidden()
+                else:
+                    return HttpResponseForbidden()
+            except ObjectDoesNotExist:
+                return HttpResponseBadRequest()
+        else:
+            return HttpResponseBadRequest()
+    else:
+        return HttpResponseNotAllowed(['POST'])
+
+
+@login_required
+def manage_users(request):
+    user = MyUser.objects.get(user=request.user)
+    if user.is_admin:
+        context = {
+            'user': user,
+            'users': MyUser.objects.all(),
+            'csrf_token': get_token(request),
+        }
+        return render_to_response('manage_users.html', context, context_instance=RequestContext(request))
+    else:
+        return HttpResponseForbidden()
 
 
 @login_required
@@ -160,6 +201,7 @@ def manage_task_requests(request):
         for t in tasks:
             task_requests[t] = TaskRequest.objects.filter(task=t)
     context = {
+        'user': user,
         'task_requests': task_requests,
     }
     return render_to_response('manage_task_requests.html', context, context_instance=RequestContext(request))
