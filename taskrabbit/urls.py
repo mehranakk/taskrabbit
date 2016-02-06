@@ -1,6 +1,6 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from catalogue.views import home, take_task, new_task, profile, history, comments, edit, signup, search, browse, manage_task_requests, accept_request, done_task, comment_employee, payment
+from catalogue.views import home, take_task, new_task, profile, history, comments, edit, signup, search, browse, manage_task_requests, accept_request, done_task, comment_employee, payment, employee_profile, employee_comments, employee_history
 
 urlpatterns = [
     url(r'^category/(?P<category>[A-Za-z0-9_\-]+)/$', browse, name='browse'),
@@ -18,6 +18,9 @@ urlpatterns = [
     url(r'^payment/(?P<task_request_id>[0-9]+)/$', payment),
     url(r'^comment_employee/(?P<employee_id>[0-9]+)/$', comment_employee),
     url(r'^accounts/profile/$', profile),
+    url(r'^profile/(?P<employee_id>[0-9]+)/$', employee_profile),
+    url(r'^comments/(?P<employee_id>[0-9]+)/$', employee_comments),
+    url(r'^history/(?P<employee_id>[0-9]+)/$', employee_history),
     url(r'^accounts/history/$', history),
     url(r'^accounts/comments/$', comments),
     url(r'^accounts/manage_task_requests/$', manage_task_requests),

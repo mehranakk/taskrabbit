@@ -30,9 +30,9 @@ def home(request):
 def browse(request, category='all'):
     if request.method == 'GET':
         if category == 'all':
-            tasks = Task.objects.all()
+            tasks = Task.objects.filter(status='N')
         else:
-            tasks = Task.objects.filter(category__slug=category)
+            tasks = Task.objects.filter(status='N', category__slug=category)
         context = {
             'tasks': tasks.order_by('-upload_date'),
             'user': MyUser.objects.get(user=request.user) if isinstance(request.user, User) else None,
@@ -51,9 +51,9 @@ def search(request):
             if query:  # avoid saving empty queries
                 SearchQuery.objects.create(text=query)
             query_words = query.lower().split()
-            tasks = Task.objects.all()
+            tasks = Task.objects.filter(status='N')
             for word in query_words:
-                tasks = tasks.filter(Q(title__icontains=word) | Q(text__icontains=word) | Q(category__name__icontains=word) | Q(location__icontains=word))
+                tasks = tasks.filter(status='N').filter(Q(title__icontains=word) | Q(text__icontains=word) | Q(category__name__icontains=word) | Q(location__icontains=word))
             context = {
                 'tasks': tasks.order_by('-upload_date'),
                 'query': query,
@@ -83,6 +83,18 @@ def profile(request):
     context = {
         'user': user,
         'skills': user.skills.all(),
+        'is_owner': True
+    }
+    return render_to_response("profile.html", context, context_instance=RequestContext(request))
+
+@login_required
+def employee_profile(request, employee_id):
+    user = MyUser.objects.get(user=request.user)
+    employee = MyUser.objects.get(id=employee_id)
+    context = {
+        'user': employee,
+        'skills': employee.skills.all(),
+        'is_owner': False
     }
     return render_to_response("profile.html", context, context_instance=RequestContext(request))
 
@@ -137,6 +149,22 @@ def history(request):
         'tasks_as_employee': tasks_as_employee,
         'tasks_as_employer': tasks_as_employer,
         'requested_tasks': requested_tasks,
+        'is_owner': True,
+    }
+    return render_to_response('history.html', context, context_instance=RequestContext(request))
+
+
+@login_required
+def employee_history(request, employee_id):
+    employee = MyUser.objects.get(id=employee_id)
+    tasks_as_employee = Task.objects.filter(employee=employee)
+    tasks_as_employer = Task.objects.filter(employer=employee)
+    requested_tasks = TaskRequest.objects.filter(employee=employee)
+    context = {
+        'tasks_as_employee': tasks_as_employee,
+        'tasks_as_employer': tasks_as_employer,
+        'requested_tasks': requested_tasks,
+        'is_owner': False,
     }
     return render_to_response('history.html', context, context_instance=RequestContext(request))
 
@@ -147,8 +175,21 @@ def comments(request):
     context = {
         'your_comments': Comment.objects.filter(employer=user),
         'comments_about_you': Comment.objects.filter(employee=user),
+        'is_owner': True,
     }
     return render_to_response('comments.html', context, context_instance=RequestContext(request))
+
+
+@login_required
+def employee_comments(request, employee_id):
+    user = MyUser.objects.get(id=employee_id)
+    context = {
+        'your_comments': Comment.objects.filter(employer=user),
+        'comments_about_you': Comment.objects.filter(employee=user),
+        'is_owner': False,
+    }
+    return render_to_response('comments.html', context, context_instance=RequestContext(request))
+
 
 
 @login_required
