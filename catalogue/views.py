@@ -265,7 +265,8 @@ def new_task(request):
             text = form.cleaned_data['text']
             category = form.cleaned_data['category']
             price = form.cleaned_data['price']
-            task = Task.objects.create(employer=employer, title=title, price=price, text=text, upload_date=datetime.now(), category=category, status='N')
+            location = form.cleaned_data['location']
+            task = Task.objects.create(employer=employer, title=title, price=price, text=text, upload_date=datetime.now(), category=category, status='N', location=location)
             task.save()
 
         return HttpResponseRedirect('/')
