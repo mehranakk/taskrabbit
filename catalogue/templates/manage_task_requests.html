@@ -1,0 +1,32 @@
+{%  extends "base.html" %}
+
+{% block title %}Comments{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            <ul class="nav nav-tabs">
+                <li role="presentation"><a href="/accounts/profile/">Profile</a></li>
+                <li role="presentation"><a href="/accounts/history/">History</a></li>
+                <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
+                <li role="presentation" class="active"><a href="/accounts/manage_task_requests/">Manage Task Requests</a></li>
+            </ul>
+        </div>
+        <div class="col-md-6 col-md-offset-3">
+            {% for task, requests_list in task_requests.items %}
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i><strong>{{ task }}:</strong></i></div>
+                    {% for request in requests_list %}
+                        <div class="panel-body">
+                            {{ request.employee }}
+                            <form action='/accept_request/{{request.id}}/' method='POST'>
+                                {% csrf_token %}
+                                <button type='submit' value='Accept'> Accept </button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+   </div>
+{% endblock %}

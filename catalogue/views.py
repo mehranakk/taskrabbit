@@ -152,6 +152,40 @@ def comments(request):
 
 
 @login_required
+def manage_task_requests(request):
+    user = MyUser.objects.get(user=request.user)
+    tasks = Task.objects.filter(employer=user, status='N')
+    task_requests = {}
+    if tasks:
+        for t in tasks:
+            task_requests[t] = TaskRequest.objects.filter(task=t)
+    context = {
+        'task_requests': task_requests,
+    }
+    return render_to_response('manage_task_requests.html', context, context_instance=RequestContext(request))
+
+
+@login_required
+def accept_request(request, task_request_id):
+    user = MyUser.objects.get(user=request.user)
+    task_request = TaskRequest.objects.get(id=task_request_id)
+    task = task_request.task
+    task.employee = task_request.employee
+    task.status = 'A'
+    task.save()
+    return HttpResponseRedirect('/accounts/profile')
+
+
+@login_required
+def done_task(request, task_id):
+    user = MyUser.objects.get(user=request.user)
+    task = Task.objects.get(id=task_id)
+    task.status = 'D'
+    task.save()
+    return HttpResponseRedirect('/accounts/profile')
+
+
+@login_required
 def new_task(request):
     employer = MyUser.objects.get(user=request.user)
     if request.method == "POST":

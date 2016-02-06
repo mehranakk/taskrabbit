@@ -9,6 +9,7 @@
                 <li role="presentation"><a href="/accounts/profile/">Profile</a></li>
                 <li role="presentation" class="active"><a href="/accounts/history/">History</a></li>
                 <li role="presentation"><a href="/accounts/comments/">Comments</a></li>
+                <li role="presentation"><a href="/accounts/manage_task_requests/">Manage Task Requests</a></li>
             </ul>
         </div>
         <div class="col-md-6 col-md-offset-3">
@@ -52,6 +53,12 @@
                                 Assigned
                             {% endif %}
                         </span>
+                    {% if t.status == 'A' %}
+                        <form action='/done_task/{{t.id}}/' method='POST'>
+                            {% csrf_token %}
+                            <button type='submit' value='Done'> Done </button>
+                        </form>
+                    {% endif %}
                     </li>
                 {% endfor %}
                 </ul>
