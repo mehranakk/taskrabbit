@@ -5,9 +5,13 @@
 {% block content %}
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
-            {%  for task in tasks %}
-                {% include "task.html" %}
-            {% endfor %}
+            {% if not tasks %}
+                <h5 class="text-center">No results found  for "{{ query }}"</h5>
+            {% else %}
+                {%  for task in tasks %}
+                    {% include "task.html" %}
+                {% endfor %}
+            {% endif %}
         </div>
     </div>
 {% endblock %}

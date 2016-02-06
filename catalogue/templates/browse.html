@@ -1,0 +1,28 @@
+{%  extends "base.html" %}
+
+{% block title %}"{{ selected_category.name }}" Category{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-md-6 col-md-offset-3">
+            {% if not tasks %}
+                <h5 class="text-center">No results in {{ selected_category.name }}</h5>
+            {% else %}
+                {%  for task in tasks %}
+                    {% include "task.html" %}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="col-md-3">
+            <ul class="list-group">
+                {% for category in categories %}
+                    {% if category.slug == selected_category.slug %}
+                        <li class="list-group-item active">{{ category.name }}</li>
+                    {% else %}
+                        <li class="list-group-item"><a href="/category/{{ category.slug }}">{{ category.name }}</a></li>
+                    {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

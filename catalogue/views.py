@@ -1,8 +1,8 @@
 from datetime import datetime
-from httplib2 import Http
 
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.template import RequestContext
 from django.db.models import Count, Avg, Q
@@ -13,14 +13,7 @@ from catalogue.models import *
 from catalogue.forms import *
 
 
-def home(request, category='all'):
-    # if category == 'all':
-    #     tasks = Task.objects.all()
-    # else:
-    #     tasks = Task.objects.filter(category__slug=category)
-    # context = {'request': request, 'tasks': tasks, 'categories':Category.objects.all(), 'selected_category':category}
-    # return render_to_response("tasks.html", context)
-
+def home(request):
     top_search_queries = SearchQuery.objects.values('text').annotate(Count('text')).order_by('-text__count')[:5]
     most_posted_employers = MyUser.objects.annotate(Count('task_employer')).filter(task_employer__count__gt=0).order_by('-task_employer__count')[:5]
     employees = MyUser.objects.annotate(Count('task_employee')).filter(task_employee__count__gt=0)
@@ -34,12 +27,29 @@ def home(request, category='all'):
     return render_to_response("home.html", context, context_instance=RequestContext(request))
 
 
-@login_required
+def browse(request, category='all'):
+    if request.method == 'GET':
+        if category == 'all':
+            tasks = Task.objects.all()
+        else:
+            tasks = Task.objects.filter(category__slug=category)
+        context = {
+            'tasks': tasks.order_by('-upload_date'),
+            'user': MyUser.objects.get(user=request.user) if isinstance(request.user, User) else None,
+            'categories': Category.objects.all(),
+            'selected_category': Category.objects.get(slug=category),
+        }
+        return render_to_response("browse.html", context, context_instance=RequestContext(request))
+    else:
+        return HttpResponseNotAllowed(['GET'])
+
+
 def search(request):
     if request.method == 'GET':
         if 'query' in request.GET:
             query = request.GET['query']
-            SearchQuery.objects.create(text=query)
+            if query:  # avoid saving empty queries
+                SearchQuery.objects.create(text=query)
             query_words = query.lower().split()
             tasks = Task.objects.all()
             for word in query_words:
@@ -47,6 +57,7 @@ def search(request):
             context = {
                 'tasks': tasks.order_by('-upload_date'),
                 'query': query,
+                'user': MyUser.objects.get(user=request.user) if isinstance(request.user, User) else None,
             }
             return render_to_response("search_results.html", context, context_instance=RequestContext(request))
         else:

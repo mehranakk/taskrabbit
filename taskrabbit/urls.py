@@ -1,9 +1,9 @@
 from django.conf.urls import include, url
 from django.contrib import admin
-from catalogue.views import home, take_task, new_task, profile, history, comments, edit, signup, search
+from catalogue.views import home, take_task, new_task, profile, history, comments, edit, signup, search, browse
 
 urlpatterns = [
-    url(r'^category/(?P<category>[A-Za-z0-9_]+)/$', home, name='home'),
+    url(r'^category/(?P<category>[A-Za-z0-9_\-]+)/$', browse, name='browse'),
     url(r'^$', home, name='default_home'),
     url(r'^take_task/(?P<task_id>[0-9]+)/$', take_task, name='home'),
     url(r'^admin/', include(admin.site.urls)),
