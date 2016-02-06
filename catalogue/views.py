@@ -1,10 +1,11 @@
 from datetime import datetime
+from httplib2 import Http
 
 from django.shortcuts import render_to_response
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponseNotAllowed, HttpResponseBadRequest
 from django.template import RequestContext
-from django.db.models import Count, Avg
+from django.db.models import Count, Avg, Q
 from django.contrib.sessions.models import Session
 
 
@@ -33,9 +34,25 @@ def home(request, category='all'):
     return render_to_response("home.html", context, context_instance=RequestContext(request))
 
 
+@login_required
 def search(request):
-    SearchQuery.objects.create(text=request.GET['query'])
-    return HttpResponseRedirect('/')
+    if request.method == 'GET':
+        if 'query' in request.GET:
+            query = request.GET['query']
+            SearchQuery.objects.create(text=query)
+            query_words = query.lower().split()
+            tasks = Task.objects.all()
+            for word in query_words:
+                tasks = tasks.filter(Q(title__icontains=word) | Q(text__icontains=word) | Q(category__name__icontains=word) | Q(location__icontains=word))
+            context = {
+                'tasks': tasks.order_by('-upload_date'),
+                'query': query,
+            }
+            return render_to_response("search_results.html", context, context_instance=RequestContext(request))
+        else:
+            return HttpResponseBadRequest()
+    else:
+        return HttpResponseNotAllowed(['GET'])
 
 
 @login_required

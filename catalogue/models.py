@@ -33,12 +33,12 @@ class Task(models.Model):
     text = models.TextField(verbose_name="Text", default="")
     upload_date = models.DateTimeField("Upload Date")
     category = models.ForeignKey(Category)
+    location = models.CharField(max_length=50, blank=True, null=True)
     STATUS_STATE_CHOICES = (
         ('N', 'New'),
         ('A', 'Assigned'),
         ('D', 'Done'),
     )
-
     status = models.CharField(verbose_name="status", max_length=1,
                                              choices=STATUS_STATE_CHOICES, default='N')
 

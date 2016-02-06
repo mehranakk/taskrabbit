@@ -15,7 +15,7 @@
             <h4>Comments about you</h4>
             {% for comment in comments_about_you %}
                 <div class="panel panel-default">
-                    <div class="panel-heading"><i><strong>{{ comment.employer }}</strong></i> said:</div>
+                    <div class="panel-heading"><i><strong>{{ comment.employer.display_name }}</strong></i> said:</div>
                     <div class="panel-body">
                         {{ comment.text }}
                     </div>
@@ -26,7 +26,7 @@
             <h4>Your comments</h4>
             {% for comment in your_comments %}
                 <div class="panel panel-default">
-                    <div class="panel-heading">about <i><strong>{{ comment.employee }}</strong></i>:</div>
+                    <div class="panel-heading">about <i><strong>{{ comment.employee.display_name }}</strong></i>:</div>
                     <div class="panel-body">
                         {{ comment.text }}
                     </div>
