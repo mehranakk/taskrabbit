@@ -35,6 +35,7 @@ class Task(models.Model):
     upload_date = models.DateTimeField("Upload Date")
     category = models.ForeignKey(Category)
     location = models.CharField(max_length=50, blank=True, null=True)
+    price = models.PositiveIntegerField(verbose_name='Price', default=0)
     STATUS_STATE_CHOICES = (
         ('N', 'New'),
         ('A', 'Assigned'),

@@ -26,12 +26,10 @@
                     {% for request in requests_list %}
                         from
                         <i><strong>{{ request.employee }}</strong></i>
-                        <form action='/accept_request/{{request.id}}/' method='POST'>
-                            {% csrf_token %}
-                            <div class="text-center">
-                                <button type='submit' class="btn btn-default" value='Accept'>Accept</button>
-                            </div>
-                        </form>
+                        <button onclick="location.href = '/payment/{{ request.id }}';" class="btn btn-default">
+                            Accept and Pay
+                            <span class="glyphicon glyphicon-shopping-cart"></span>
+                        </button>
                     {% endfor %}
                     </div>
                 </div>

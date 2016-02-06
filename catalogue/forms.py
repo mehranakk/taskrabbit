@@ -21,7 +21,7 @@ class NewProfileForm(forms.Form):
 class NewTaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'text', 'category',]
+        fields = ['title', 'text', 'category', 'price', ]
 
 
 class CommentForm(forms.ModelForm):

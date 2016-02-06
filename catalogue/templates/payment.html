@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block title %}New Task{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 col-md-offset-4">
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    Please pay {{ price }} to  {{ employee.display_name }}
+                    <label for="id_bank">Bank</label>
+                    <select id="id_bank" name="bank" class="form-control">
+                        <option value="1">Pasargad</option>
+                        <option value="2">Saman</option>
+                        <option value="3">Mellat</option>
+                    </select>
+                </div>
+                <button onclick="location.href = '/accept_request/{{ task_request.id }}';" class="btn btn-default">
+                        Pay
+                        <span class="glyphicon glyphicon-list-alt"></span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

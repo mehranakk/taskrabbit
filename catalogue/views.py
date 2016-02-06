@@ -248,6 +248,14 @@ def comment_employee(request, employee_id):
 
 
 @login_required
+def payment(request, task_request_id):
+    employer = MyUser.objects.get(user=request.user)
+    task_request = TaskRequest.objects.get(id=task_request_id)
+    task = task_request.task
+    return render_to_response('payment.html', {'employee': task_request.employee, 'price': task.price, 'task_request':task_request}, context_instance=RequestContext(request))
+
+
+@login_required
 def new_task(request):
     employer = MyUser.objects.get(user=request.user)
     if request.method == "POST":
@@ -256,7 +264,8 @@ def new_task(request):
             title = form.cleaned_data['title']
             text = form.cleaned_data['text']
             category = form.cleaned_data['category']
-            task = Task.objects.create(employer=employer, title=title, text=text, upload_date=datetime.now(), category=category, status='N')
+            price = form.cleaned_data['price']
+            task = Task.objects.create(employer=employer, title=title, price=price, text=text, upload_date=datetime.now(), category=category, status='N')
             task.save()
 
         return HttpResponseRedirect('/')
